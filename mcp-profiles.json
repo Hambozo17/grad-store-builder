@@ -1,0 +1,158 @@
+{
+  "purpose": "Controlled activation catalog for the graduation project. Keep only the core-dev servers active by default; copy profile entries into .cursor/mcp.json or .vscode/mcp.json when that project stage needs them.",
+  "activeProfile": "core-dev",
+  "profiles": {
+    "core-dev": [
+      "openaiDeveloperDocs",
+      "context7",
+      "shopify-dev-mcp",
+      "shadcn",
+      "playwright",
+      "chrome-devtools",
+      "cloudflare-docs",
+      "x-docs",
+      "filesystem-project"
+    ],
+    "shopify-docs": [
+      "shopify-dev-mcp",
+      "openaiDeveloperDocs",
+      "context7",
+      "x-docs"
+    ],
+    "commerce-dev": [
+      "supabase-readonly",
+      "shopify-storefront-template",
+      "prisma-remote",
+      "prisma-local",
+      "neon"
+    ],
+    "payments-future": [
+      "stripe"
+    ],
+    "frontend-design": [
+      "figma",
+      "shadcn",
+      "playwright",
+      "chrome-devtools"
+    ],
+    "research-brand": [
+      "tavily",
+      "firecrawl",
+      "x-docs"
+    ],
+    "automation": [
+      "n8n-template",
+      "pipedream",
+      "zapier-template",
+      "make-template"
+    ],
+    "deploy-observe": [
+      "github-readonly",
+      "vercel",
+      "netlify",
+      "cloudflare-api",
+      "cloudflare-bindings",
+      "cloudflare-workers-builds",
+      "cloudflare-observability",
+      "cloudflare-radar",
+      "cloudflare-browser",
+      "sentry"
+    ]
+  },
+  "cursorTemplates": {
+    "github-readonly": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "X-MCP-Toolsets": "context,repos,issues,pull_requests,actions,code_security",
+        "X-MCP-Readonly": "true"
+      }
+    },
+    "supabase-readonly": {
+      "url": "https://mcp.supabase.com/mcp?read_only=true&features=database,docs,development"
+    },
+    "stripe": {
+      "url": "https://mcp.stripe.com"
+    },
+    "figma": {
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "vercel": {
+      "url": "https://mcp.vercel.com"
+    },
+    "netlify": {
+      "command": "npx",
+      "args": ["-y", "@netlify/mcp"]
+    },
+    "cloudflare-api": {
+      "url": "https://mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-bindings": {
+      "url": "https://bindings.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-workers-builds": {
+      "url": "https://builds.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-observability": {
+      "url": "https://observability.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-radar": {
+      "url": "https://radar.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-browser": {
+      "url": "https://browser.mcp.cloudflare.com/mcp"
+    },
+    "tavily": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.tavily.com/mcp"]
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${env:FIRECRAWL_API_KEY}"
+      }
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "prisma-remote": {
+      "url": "https://mcp.prisma.io/mcp"
+    },
+    "prisma-local": {
+      "command": "npx",
+      "args": ["-y", "prisma", "mcp"]
+    },
+    "neon": {
+      "url": "https://mcp.neon.tech/mcp"
+    },
+    "pipedream": {
+      "url": "https://mcp.pipedream.net/v2"
+    },
+    "shopify-storefront-template": {
+      "url": "https://YOUR_SHOP.myshopify.com/api/mcp"
+    },
+    "n8n-template": {
+      "type": "http",
+      "url": "https://YOUR_N8N_DOMAIN/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer ${env:N8N_MCP_TOKEN}"
+      }
+    },
+    "zapier-template": {
+      "url": "PASTE_ZAPIER_MCP_SERVER_ENDPOINT_FROM_https://mcp.zapier.com/"
+    },
+    "make-template": {
+      "url": "PASTE_MAKE_MCP_SERVER_URL_FROM_MAKE"
+    }
+  },
+  "rules": [
+    "Use Shopify official docs or shopify-dev-mcp for all Shopify API, Storefront, Hydrogen, Liquid, UCP, Catalog, Cart MCP, and Checkout MCP questions.",
+    "Check Shopify Developer Changelog before relying on API behavior or version-specific checkout/cart features.",
+    "Do not activate Stripe for Version One. Payments are skipped; use admin-granted credits and mock checkout/handoff only.",
+    "Keep Supabase/Prisma/Neon access on development databases only.",
+    "Use Supabase Auth and Postgres RLS for Version One tenant isolation; never expose service-role keys to client code.",
+    "Use read-only MCP variants before enabling write tools.",
+    "Do not add full-device filesystem access.",
+    "Do not commit or paste live secrets into MCP config files."
+  ]
+}

@@ -1,0 +1,517 @@
+% !TEX program = xelatex
+% Version One Advanced Plan — Technical Wide-View Deck
+% Compile:  xelatex -interaction=nonstopmode 01-version-one-technical-deck.tex
+%       or  latexmk -xelatex 01-version-one-technical-deck.tex
+
+\documentclass[11pt,landscape,a4paper]{article}
+
+\usepackage[a4paper,landscape,margin=12mm,top=14mm,bottom=14mm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\tcbuselibrary{skins,breakable}
+
+\definecolor{NavyDeep}{HTML}{0B1F3F}
+\definecolor{Teal}{HTML}{00B8AE}
+\definecolor{Violet}{HTML}{6D4DF0}
+\definecolor{Emerald}{HTML}{16A34A}
+\definecolor{Amber}{HTML}{D97706}
+\definecolor{Slate}{HTML}{475569}
+\definecolor{LightBg}{HTML}{F8FAFC}
+\definecolor{Ink}{HTML}{0F172A}
+
+\setmainfont{Segoe UI}
+\setsansfont{Segoe UI}
+\setmonofont{Consolas}
+
+\pagecolor{LightBg}
+\color{Ink}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Slate}Grad Store Builder \textbar{} Version One \textbar{} Technical Deck}
+\fancyhead[R]{\small\color{Slate}\thepage}
+\fancyfoot[C]{\small\color{Slate}docs/latex/01-version-one-technical-deck.tex}
+\renewcommand{\headrulewidth}{0pt}
+
+\titleformat{\section}{\Large\bfseries\color{NavyDeep}}{\thesection.}{8pt}{}
+
+\newcommand{\gateheader}[4]{%
+  \begin{tcolorbox}[
+    enhanced, sharp corners, boxrule=0pt,
+    colback=NavyDeep, coltext=white,
+    left=10pt, right=10pt, top=6pt, bottom=6pt,
+    overlay={
+      \node[anchor=west,inner sep=0pt] at ([xshift=4pt]frame.west)
+        {\textcolor{Teal}{\rule{4pt}{12pt}}};
+    }
+  ]
+    {\Large\bfseries #1} \hfill {\small\textcolor{Teal!70!white}{#2}}\\[1pt]
+    {\small\color{white!85!NavyDeep}#3} \hfill {\small\ttfamily\color{Amber!70!white}#4}
+  \end{tcolorbox}
+}
+
+\newcommand{\figureslot}[2]{%
+  \begin{minipage}[t]{0.62\textwidth}
+    \vspace{0pt}
+    \fbox{\includegraphics[width=\linewidth,keepaspectratio]{figures/#1}}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.36\textwidth}
+    \vspace{0pt}
+    #2
+  \end{minipage}
+}
+
+\newtcolorbox{techbox}[1][]{%
+  enhanced, breakable,
+  colback=white, colframe=Teal!70!NavyDeep,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Teal!75!NavyDeep,
+  title={#1}
+}
+
+\newtcolorbox{donewhen}{%
+  enhanced, breakable,
+  colback=Emerald!8, colframe=Emerald,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Emerald,
+  title={Done when}
+}
+
+\newtcolorbox{riskbox}{%
+  enhanced, breakable,
+  colback=Amber!8, colframe=Amber,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Amber,
+  title={Risk \& mitigation}
+}
+
+\newcommand{\kw}[1]{\textcolor{Violet}{\textbf{#1}}}
+\newcommand{\code}[1]{\texttt{\small\color{NavyDeep}#1}}
+
+\begin{document}
+
+%======================================================================
+% COVER
+%======================================================================
+\thispagestyle{empty}
+\begin{tcolorbox}[
+  enhanced, sharp corners, boxrule=0pt,
+  colback=NavyDeep, coltext=white,
+  left=20pt, right=20pt, top=40pt, bottom=40pt,
+  width=\textwidth, height=\textheight,
+  valign=center
+]
+\centering
+{\fontsize{42pt}{50pt}\selectfont\bfseries Grad Store Builder}\\[6pt]
+{\fontsize{22pt}{28pt}\selectfont\color{Teal} Version One \textbar{} Advanced Implementation Plan}\\[24pt]
+{\Large\color{white!85!NavyDeep} Technical Architecture Deck \textbar{} 7 Gates \textbar{} 2026 Stack}\\[40pt]
+\rule{160pt}{1pt}\\[14pt]
+{\large An authenticated, multi-tenant AI e-commerce store builder}\\[4pt]
+{\large built on Next.js 16 \textbullet{} Vercel Workflows \textbullet{} AI SDK v6 \textbullet{} Supabase RLS}\\[80pt]
+{\small\color{Teal!70!white}\ttfamily docs/latex/01-version-one-technical-deck.tex \textbullet{} 2026}
+\end{tcolorbox}
+
+\newpage
+
+%======================================================================
+% TABLE OF CONTENTS
+%======================================================================
+\section*{\color{NavyDeep}Contents}
+\vspace{6pt}
+
+{\large
+\begin{tabular}{@{}p{6mm}p{82mm}p{60mm}p{40mm}@{}}
+\toprule
+\textbf{\#} & \textbf{Section} & \textbf{Branch} & \textbf{Tag on pass} \\
+\midrule
+0 & System Architecture (overview)              & ---                            & --- \\
+1 & Gate 0 \textbullet{} Source Confirmation    & \code{gate-0/source-confirmation}      & \code{v0.0-gate-0-source-confirmed} \\
+2 & Gate A \textbullet{} Foundation             & \code{gate-a/foundation-scaffold}      & \code{v0.1-gate-a-foundation-pass} \\
+3 & Gate B \textbullet{} Tenancy + Credits + Admin & \code{gate-b/credits-ledger}        & \code{v0.2-gate-b-tenancy-credits-pass} \\
+4 & Gate C \textbullet{} AI Gateway + Brand Intake & \code{gate-c/ai-gateway-tasks}      & \code{v0.3-gate-c-ai-intake-pass} \\
+5 & Gate D \textbullet{} Store Generation Pipeline & \code{gate-d/workflows-generation-run} & \code{v0.4-gate-d-generation-pass} \\
+6 & Gate E \textbullet{} Storefront + Verification & \code{gate-e/verification-runner}   & \code{v0.5-gate-e-storefront-verify-pass} \\
+7 & Gate F \textbullet{} Demo Readiness          & \code{gate-f/super-admin-store-approval} & \code{v1.0-gate-f-graduation-ready} \\
+8 & Bonus \textbullet{} AI Task Routing Matrix   & ---                            & --- \\
+9 & Bonus \textbullet{} Monorepo Layout          & ---                            & --- \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{14pt}
+\begin{tcolorbox}[colback=NavyDeep!5,colframe=NavyDeep!40,boxrule=0.4pt]
+\textbf{\color{NavyDeep}Reading order.} The deck mirrors the original image-prompt order in
+\code{docs/prompts/09-version-one-gate-diagram-image-prompts.md}. Each section is one
+landscape page: image on the left, technical narrative on the right.
+\end{tcolorbox}
+
+\newpage
+
+%======================================================================
+% 0. SYSTEM ARCHITECTURE
+%======================================================================
+\gateheader{System Architecture}{End-to-end view}{Browser \textbullet{} Next.js 16 on Vercel \textbullet{} Vercel Workflows \textbullet{} AI Gateway \textbullet{} Supabase + RLS \textbullet{} Sentry}{Master diagram}
+
+\figureslot{00-system-architecture.png}{
+\begin{techbox}[Stack at a glance]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item \kw{App} Next.js 16 App Router on Vercel Fluid Compute
+\item \kw{Auth} Supabase Auth (\code{@supabase/ssr}) cookies-based SSR
+\item \kw{DB} Supabase Postgres + RLS via Drizzle \code{pgPolicy}
+\item \kw{Orchestration} Vercel Workflows (GA April 2026)
+\item \kw{AI} AI SDK v6 \textbullet{} \code{Output.object()} \textbullet{} \code{ToolLoopAgent}
+\item \kw{Models} GPT-5.4 \textbullet{} Sonnet 4.6 \textbullet{} Haiku 4.5 \textbullet{} Gemini 2.5 Flash
+\item \kw{Images} \code{gpt-image-1} + Flux Ultra 1.1 (Replicate)
+\item \kw{Observability} Sentry + \code{@sentry/opentelemetry}
+\item \kw{Verify} Playwright + Chrome DevTools MCP
+\end{itemize}
+\end{techbox}
+
+\begin{techbox}[Why this shape]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item One Next.js app today, monorepo packages already split for future apps
+\item RLS at the DB \textit{enforces} multi-tenancy --- no client trust
+\item Workflows make the multi-step AI pipeline durable and idempotent
+\item Mock provider on every AI task = zero-network demo safety
+\end{itemize}
+\end{techbox}
+}
+
+\newpage
+
+%======================================================================
+% 1. GATE 0
+%======================================================================
+\gateheader{Gate 0 \textbullet{} Source Confirmation}{1 day}{Pin every library version. Write nothing else.}{v0.0-gate-0-source-confirmed}
+
+\figureslot{01-gate-0-source-confirmation.png}{
+\begin{techbox}[What happens]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item Run \kw{Context7 MCP} against every key library
+\item Run \kw{OpenAI Docs MCP} for structured-output + image-1
+\item Pin exact versions in the planned \code{package.json}
+\item Draft ADR 0003 (stack lock-in) and ADR 0004 (AI routing)
+\end{itemize}
+\end{techbox}
+
+\begin{techbox}[Libraries in scope]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}
+\item \code{next.js@16}, \code{@supabase/ssr}, \code{drizzle-orm}
+\item \code{ai@6}, \code{@ai-sdk/openai|anthropic|google}
+\item \code{@vercel/workflows}, \code{shadcn-ui (cli v4)}
+\item \code{@sentry/nextjs}, \code{playwright}
+\end{itemize}
+\end{techbox}
+
+\begin{donewhen}
+Pinned versions recorded \textbullet{} confirmation log written at \code{docs/logs/2026-05-XX-source-confirmation.md} \textbullet{} ADRs 0003 + 0004 drafted.
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 2. GATE A
+%======================================================================
+\gateheader{Gate A \textbullet{} Foundation}{3--4 days}{Empty app deploys to Vercel preview. Login works. RLS proven.}{v0.1-gate-a-foundation-pass}
+
+\figureslot{02-gate-a-foundation.png}{
+\begin{techbox}[The five stages]
+\setlist[enumerate]{leftmargin=14pt,itemsep=2pt}
+\begin{enumerate}
+\item \kw{Scaffold} Turborepo + pnpm \textbullet{} all 9 packages created empty
+\item \kw{Bootstrap} Next.js 16 \textbullet{} Tailwind v4 \textbullet{} shadcn cli v4 \textbullet{} Biome
+\item \kw{DB} Drizzle wired to a fresh Supabase \textit{dev} project
+\item \kw{Auth} Supabase Auth via \code{@supabase/ssr} \textbullet{} pending-approval state
+\item \kw{Observability} Sentry + OTel + AI SDK telemetry hooks installed (no AI calls yet)
+\end{enumerate}
+\end{techbox}
+
+\begin{donewhen}
+Empty app deploys to Vercel preview \textbullet{} login works \textbullet{} Sentry receives a test error \textbullet{} negative cross-user test on \code{profiles} passes.
+\end{donewhen}
+
+\begin{riskbox}
+\textbf{Forgetting RLS on \code{profiles}.} Mitigation: the cross-user negative test is the gate's fail-stop --- if it doesn't pass, Gate A doesn't tag.
+\end{riskbox}
+}
+
+\newpage
+
+%======================================================================
+% 3. GATE B
+%======================================================================
+\gateheader{Gate B \textbullet{} Tenancy \textbullet{} Credits \textbullet{} Admin}{4--5 days}{RLS at the DB. Immutable ledger. Lazy Super Admin queue.}{v0.2-gate-b-tenancy-credits-pass}
+
+\figureslot{03-gate-b-tenancy-credits-admin.png}{
+\begin{techbox}[Three pillars]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item \kw{Tenancy schema}: \code{profiles}, \code{organizations}, \code{organization\_members}, \code{admin\_actions}, \code{memberships} --- every table guarded by Drizzle \code{pgPolicy}
+\item \kw{Credits ledger}: \code{credit\_balances} (materialized) + \code{credit\_ledger} (append-only); helpers \code{reserveCredits} / \code{deductCredits} / \code{refundCredits} / \code{grantCredits}
+\item \kw{Lazy Super Admin}: pending-user queue, credit-grant form, audit log --- minimal pages, server-side guard checked on every privileged action
+\end{itemize}
+\end{techbox}
+
+\begin{techbox}[Invariants]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}
+\item $\sum \text{ledger.amount per org} = \text{credit\_balances.balance}$
+\item No row reachable across orgs (cross-tenant probes fail)
+\end{itemize}
+\end{techbox}
+
+\begin{donewhen}
+Pending user blocked \textbullet{} approved user lands in builder \textbullet{} ledger sum equals balance for every org \textbullet{} cross-tenant tests pass.
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 4. GATE C
+%======================================================================
+\gateheader{Gate C \textbullet{} AI Gateway + Brand Intake}{5--6 days}{AI SDK v6 \textbullet{} \code{Output.object()} \textbullet{} per-task routing \textbullet{} mock fallback}{v0.3-gate-c-ai-intake-pass}
+
+\figureslot{04-gate-c-ai-gateway-brand-intake.png}{
+\begin{techbox}[Brand intake flow]
+\code{prompt $\to$ Brand Intake UI $\to$ AI Gateway.normalizeBrandBrief $\to$ BrandIntakeBrief (status: ready\_for\_generation)} in $<$30 s.
+\end{techbox}
+
+\begin{techbox}[Per-task routing matrix (excerpt)]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}\small
+\item normalizeBrandBrief $\to$ \kw{Sonnet 4.6} $\,\dashrightarrow\,$ GPT-5.4
+\item createStorePlan $\to$ \kw{GPT-5.4} $\,\dashrightarrow\,$ Sonnet 4.6
+\item generateCatalog $\to$ \kw{GPT-5.4} $\,\dashrightarrow\,$ Gemini 2.5 Flash
+\item generateCopyBlocks $\to$ \kw{Sonnet 4.6} $\,\dashrightarrow\,$ GPT-5.4
+\item reviewSafety $\to$ \kw{Haiku 4.5} $\,\dashrightarrow\,$ GPT-5-nano
+\item generateProductImage $\to$ \kw{gpt-image-1 + Flux Ultra} $\,\dashrightarrow\,$ static placeholder
+\item \textbf{All tasks have a mock-provider fallback.}
+\end{itemize}
+\end{techbox}
+
+\begin{donewhen}
+Sample brief returns \code{ready\_for\_generation} in $<$30 s \textbullet{} prompt-injection attempts produce inert data \textbullet{} mock provider drives full demo flow with zero network.
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 5. GATE D
+%======================================================================
+\gateheader{Gate D \textbullet{} Store Generation Pipeline}{6--7 days}{Vercel Workflow \code{generation.run} \textbullet{} 9 retryable steps \textbullet{} credits deducted only on success}{v0.4-gate-d-generation-pass}
+
+\figureslot{05-gate-d-generation-workflow.png}{
+\begin{techbox}[The nine steps]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}\small
+\item Load Context (brief + tenant + ContextEnvelope)
+\item Reserve Credits ($\to$ ledger row)
+\item \kw{createStorePlan} (GPT-5.4 \textbullet{} \code{Output.object()})
+\item \kw{generateCatalog} (12 products)
+\item \kw{generateCopyBlocks} (Sonnet 4.6)
+\item \kw{generateProductImages} (parallel \textbullet{} mock fallback)
+\item Persist Artifacts ($\to$ \code{store\_artifacts} + Storage)
+\item \kw{summarizeVerification} (after Gate E pass)
+\item Deduct or Refund (terminal status)
+\end{enumerate}
+\end{techbox}
+
+\begin{techbox}[Artifact bus]
+\code{store.config.json} \textbullet{} \code{theme.tokens.json} \textbullet{} \code{catalog.seed.json} \textbullet{} \code{copy.blocks.json} \textbullet{} \code{generation.report.json}\\[2pt]
+Template registry: 1 strong base + 6 presets (fashion, beauty, electronics, home, fitness, gifts).
+\end{techbox}
+
+\begin{donewhen}
+Brief reaches \code{generation.artifacts\_created} reliably \textbullet{} credits deducted only on success \textbullet{} mock-provider end-to-end in $<$10 s \textbullet{} every artifact validates against its Zod schema.
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 6. GATE E
+%======================================================================
+\gateheader{Gate E \textbullet{} Storefront + Cart + Mock Checkout + Verification}{5--6 days}{Pure renderer over artifacts \textbullet{} platform-owned cart \textbullet{} 9 verification checks block \code{demo\_ready}}{v0.5-gate-e-storefront-verify-pass}
+
+\figureslot{06-gate-e-storefront-verification.png}{
+\begin{techbox}[Render path]
+\code{store\_artifacts} $\to$ \code{packages/storefront} (pure renderer) $\to$ Home, Listing, Detail, Cart, Mock Checkout, Confirmation. \kw{No AI in the render loop.}
+\end{techbox}
+
+\begin{techbox}[Verification runner --- 9 checks]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}\small
+\item Schema presence
+\item Tenant ownership probe (impersonate other org)
+\item Credit-ledger invariant
+\item All required routes return 200
+\item Cart add/remove/qty/subtotal (Playwright)
+\item Mock checkout success + cancel
+\item Responsive @ 360 / 768 / 1280 / 1920
+\item Playwright a11y axe scan
+\item Prompt-injection / secret-leak grep on artifacts
+\end{enumerate}
+\end{techbox}
+
+\begin{donewhen}
+100\% of verification checks pass \textbullet{} failed verification keeps store out of \code{demo\_ready} (credits refunded).
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 7. GATE F
+%======================================================================
+\gateheader{Gate F \textbullet{} Demo Readiness + Super Admin Polish}{3--4 days}{A stranger signs up \textbullet{} you approve \textbullet{} they generate a store \textbullet{} everything works on a fresh device}{v1.0-gate-f-graduation-ready}
+
+\figureslot{07-gate-f-demo-readiness.png}{
+\begin{techbox}[Demo-day journey (clockwise)]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}\small
+\item Stranger opens preview URL
+\item Sign up via Supabase Auth
+\item Super Admin approves \& grants 10 credits
+\item Brand prompt $\to$ \code{ready\_for\_generation} in $<$30 s
+\item Vercel Workflow runs with visible progress
+\item Storefront live at unique slug \textbullet{} cart \textbullet{} mock checkout \textbullet{} confirmation
+\item Verification green \textbullet{} admin flips status to \code{demo\_ready}
+\end{enumerate}
+\end{techbox}
+
+\begin{techbox}[Graduation bar checklist]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}\small
+\item Super Admin store-approval queue
+\item \code{tooling/fixtures/} offline demo fallback
+\item Vercel preview env locked (dev keys, no prod payments)
+\item Sentry release tagged \textbullet{} AI-error alert armed
+\item Demo runbook + 6--8 min graduation script
+\end{itemize}
+\end{techbox}
+
+\begin{donewhen}
+Stranger completes the full flow on a fresh device using only the preview URL \textbullet{} \code{AI\_PROVIDER\_MODE = mock $|$ live} switch works.
+\end{donewhen}
+}
+
+\newpage
+
+%======================================================================
+% 8. BONUS — AI ROUTING MATRIX
+%======================================================================
+\gateheader{Bonus \textbullet{} AI Task Routing Matrix}{Per-task primary model + documented fallback + always-on mock}{Refs: docs/decisions/0004-ai-task-routing-matrix.md}{Reference}
+
+\figureslot{08-bonus-ai-routing-matrix.png}{
+\begin{techbox}[Routing rules summary]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}\small
+\item Reasoning-heavy structured tasks $\to$ \kw{Claude Sonnet 4.6}
+\item Long-instruction JSON generation $\to$ \kw{GPT-5.4}
+\item Cheap utility classification $\to$ \kw{Claude Haiku 4.5}
+\item Photoreal images $\to$ \kw{Flux Ultra 1.1} on Replicate
+\item Composition/text-on-image $\to$ \kw{gpt-image-1}
+\item Catalog scale-out fallback $\to$ \kw{Gemini 2.5 Flash} (cheapest)
+\item \textbf{Mock provider} drives offline demo for every task
+\end{itemize}
+\end{techbox}
+
+\begin{techbox}[Why two image models]
+\code{gpt-image-1} composes layouts and renders text on labels reliably; Flux Ultra 1.1 wins on photoreal hero shots. Routing picks based on the artifact \code{image.kind}: \code{hero}, \code{lifestyle}, \code{packshot}, \code{label}.
+\end{techbox}
+}
+
+\newpage
+
+%======================================================================
+% 9. BONUS — MONOREPO LAYOUT
+%======================================================================
+\gateheader{Bonus \textbullet{} Monorepo Layout}{Turborepo + pnpm}{One app today, room for more \textbullet{} \code{contracts/} + \code{db/} shared across all packages}{Reference}
+
+\figureslot{09-bonus-monorepo-layout.png}{
+\begin{techbox}[Today]
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt}
+\begin{itemize}\small
+\item \kw{apps/web} --- Next.js 16 App Router
+\item \kw{packages/contracts} --- Zod schemas (single source of truth, depended on by every package)
+\item \kw{packages/db} --- Drizzle schema + RLS policies + migrations
+\item \kw{packages/ai-gateway} --- AI SDK v6 task adapters
+\item \kw{packages/generation} --- Workflow orchestrator
+\item \kw{packages/storefront} --- pure renderer
+\item \kw{packages/cart} --- platform cart engine
+\item \kw{packages/verification} --- checks runner
+\item \kw{packages/ui} --- shadcn registry + tokens
+\item \kw{packages/config} --- tsconfig \textbullet{} biome \textbullet{} tailwind
+\end{itemize}
+\end{techbox}
+
+\begin{techbox}[Future (no rewrites)]
+\code{apps/worker} \textbullet{} \code{apps/admin-portal} \textbullet{} \code{apps/mobile} all slot in beside \code{apps/web}, sharing the same packages.
+\end{techbox}
+}
+
+\newpage
+
+%======================================================================
+% APPENDIX — GATE ROADMAP TABLE
+%======================================================================
+\section*{\color{NavyDeep}Appendix \textbullet{} Gate Roadmap at a Glance}
+\vspace{6pt}
+
+{\small
+\begin{tabular}{@{}p{14mm}p{55mm}p{18mm}p{50mm}p{50mm}@{}}
+\toprule
+\textbf{Gate} & \textbf{Theme} & \textbf{Days} & \textbf{Branch} & \textbf{Tag on pass} \\
+\midrule
+0 & Source Confirmation                & 1    & gate-0/source-confirmation       & v0.0-gate-0-source-confirmed \\
+A & Foundation                         & 3--4 & gate-a/foundation-scaffold       & v0.1-gate-a-foundation-pass \\
+B & Tenancy + Credits + Admin          & 4--5 & gate-b/credits-ledger            & v0.2-gate-b-tenancy-credits-pass \\
+C & AI Gateway + Brand Intake          & 5--6 & gate-c/ai-gateway-tasks          & v0.3-gate-c-ai-intake-pass \\
+D & Store Generation Pipeline          & 6--7 & gate-d/workflows-generation-run  & v0.4-gate-d-generation-pass \\
+E & Storefront + Verification          & 5--6 & gate-e/verification-runner       & v0.5-gate-e-storefront-verify-pass \\
+F & Demo Readiness                     & 3--4 & gate-f/super-admin-store-approval & v1.0-gate-f-graduation-ready \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total working days to graduation bar}} & \textbf{$\approx 33$} & & \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{12pt}
+\begin{tcolorbox}[colback=NavyDeep!5,colframe=NavyDeep!40,boxrule=0.4pt]
+\textbf{\color{NavyDeep}Done means.} A stranger signs up at the preview URL. Super Admin approves them and grants
+10 credits. They submit a brand prompt; AI returns a structured brief in $<$30 s. The Vercel
+Workflow runs the 9 generation steps with visible progress. A storefront with home, listing,
+detail, cart, mock checkout, and confirmation is live at a unique slug. The verification report
+is green; admin store-approval flips status to \code{demo\_ready}. Sentry shows traces, token
+costs, and zero unresolved errors. The same demo runs offline using fixtures.
+\end{tcolorbox}
+
+\end{document}

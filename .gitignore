@@ -1,0 +1,65 @@
+# === OS ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === Cursor IDE (keep plans, exclude local runtime) ===
+.cursor/mcp.json
+.cursor/projects/
+.cursor/rules/
+
+# === MCP setup artifacts (downloaded third-party bundles) ===
+mcp-setup-sources/
+mcp-setup-backups/
+
+# === Environment / Secrets ===
+.env
+.env.*
+!.env.example
+
+# === Node / JS ===
+node_modules/
+.pnpm-store/
+dist/
+.next/
+.vercel/
+.turbo/
+out/
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# === LaTeX build artifacts (keep .tex and .pdf, drop the rest) ===
+docs/latex/*.aux
+docs/latex/*.log
+docs/latex/*.out
+docs/latex/*.fls
+docs/latex/*.fdb_latexmk
+docs/latex/*.synctex.gz
+docs/latex/*.toc
+docs/latex/*.nav
+docs/latex/*.snm
+docs/latex/*.vrb
+docs/latex/*.bbl
+docs/latex/*.blg
+docs/latex/*.xdv
+
+# === Python (if any) ===
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# === Supabase local ===
+supabase/.temp/
+
+# === Sentry sourcemaps ===
+.sentryclirc

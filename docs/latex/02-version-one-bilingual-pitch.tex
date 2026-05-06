@@ -1,0 +1,625 @@
+% !TEX program = xelatex
+% Version One Advanced Plan — Bilingual Graduation Pitch Deck
+% English (left) / Arabic (right), simple language, panel-ready
+% Compile:  xelatex -interaction=nonstopmode 02-version-one-bilingual-pitch.tex
+%       or  latexmk -xelatex 02-version-one-bilingual-pitch.tex
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=15mm,top=18mm,bottom=18mm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{ragged2e}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bidi} % loaded last so it can patch other packages
+
+\tcbuselibrary{skins,breakable}
+
+% --- fonts (Windows-default fonts so it compiles anywhere on this machine) ---
+\setmainfont{Segoe UI}
+\setsansfont{Segoe UI}
+\setmonofont{Consolas}
+\newfontfamily\arabicfont[Script=Arabic,Scale=1.20]{Arabic Typesetting}
+
+% --- bilingual helpers (using bidi directly, no polyglossia) ---
+\DeclareRobustCommand{\ar}[1]{\RL{\arabicfont #1}}
+\newenvironment{arblock}{\par\setRL\arabicfont\RaggedLeft}{\par}
+
+% --- colours mirror the slide deck ---
+\definecolor{NavyDeep}{HTML}{0B1F3F}
+\definecolor{Teal}{HTML}{00857F}
+\definecolor{Violet}{HTML}{6D4DF0}
+\definecolor{Emerald}{HTML}{16A34A}
+\definecolor{Amber}{HTML}{D97706}
+\definecolor{Slate}{HTML}{475569}
+\definecolor{LightBg}{HTML}{F8FAFC}
+\definecolor{Ink}{HTML}{0F172A}
+
+\pagecolor{LightBg}
+\color{Ink}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Slate}Grad Store Builder \textbar{} Bilingual Pitch}
+\fancyhead[R]{\small\color{Slate}\thepage}
+\fancyfoot[C]{\small\color{Slate}docs/latex/02-version-one-bilingual-pitch.tex}
+\renewcommand{\headrulewidth}{0pt}
+
+\titleformat{\section}{\Large\bfseries\color{NavyDeep}}{\thesection.}{8pt}{}
+
+% --- helper boxes -----------------------------------------------------------
+\newcommand{\sectiontitle}[2]{%
+  \vspace{4pt}
+  \begin{tcolorbox}[
+    enhanced, sharp corners, boxrule=0pt,
+    colback=NavyDeep, coltext=white,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  ]
+    {\Large\bfseries #1}\\[1pt]
+    {\small\color{Teal!40!white}#2}
+  \end{tcolorbox}
+}
+
+\newcommand{\figcenter}[1]{%
+  \begin{center}
+    \fbox{\includegraphics[width=0.92\textwidth,keepaspectratio]{figures/#1}}
+  \end{center}
+}
+
+\newtcolorbox{enbox}[1][What it means]{%
+  enhanced, breakable,
+  colback=white, colframe=Teal!75!NavyDeep,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Teal!75!NavyDeep,
+  title={#1}
+}
+
+\newtcolorbox{arbox}[1][\ar{المعنى البسيط}]{%
+  enhanced, breakable,
+  colback=white, colframe=Violet!75!NavyDeep,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Violet!75!NavyDeep,
+  title={#1}
+}
+
+\newtcolorbox{pitchbox}{%
+  enhanced, breakable,
+  colback=Emerald!8, colframe=Emerald,
+  boxrule=0.6pt, sharp corners=south,
+  left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries\color{white},
+  colbacktitle=Emerald,
+  title={Pitch script \textbar{} \ar{نص العرض}}
+}
+
+\newcommand{\bilingual}[2]{%
+  \noindent
+  \begin{minipage}[t]{0.49\textwidth}
+    \vspace{0pt}
+    #1
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \vspace{0pt}
+    \begin{arblock}#2\end{arblock}
+  \end{minipage}\par\vspace{6pt}
+}
+
+\newcommand{\kw}[1]{\textcolor{Violet}{\textbf{#1}}}
+\newcommand{\code}[1]{\texttt{\small\color{NavyDeep}#1}}
+
+\begin{document}
+
+%======================================================================
+% COVER
+%======================================================================
+\thispagestyle{empty}
+\begin{tcolorbox}[
+  enhanced, sharp corners, boxrule=0pt,
+  colback=NavyDeep, coltext=white,
+  left=18pt, right=18pt, top=30pt, bottom=30pt,
+  width=\textwidth, height=0.95\textheight,
+  valign=center
+]
+\centering
+{\fontsize{36pt}{42pt}\selectfont\bfseries Grad Store Builder}\\[4pt]
+{\fontsize{18pt}{22pt}\selectfont\color{Teal!50!white} Version One \textbar{} Graduation Pitch Deck}\\[18pt]
+{\Large\color{white!85!NavyDeep} A simple, bilingual walk-through for the supervisor panel}\\[10pt]
+{\large\color{white!75!NavyDeep} English (left) \textbullet{} \ar{العربية (يمين)}}\\[40pt]
+\rule{160pt}{0.6pt}\\[16pt]
+\begin{minipage}{0.85\textwidth}
+\centering
+{\large An authenticated multi-tenant AI e-commerce store builder.}\\[4pt]
+{\large An approved user writes a brand prompt;}\\[2pt]
+{\large the system generates a full storefront with cart, mock checkout, and verification.}
+\\[18pt]
+{\arabicfont\setRL
+{\Large منصة لبناء متاجر إلكترونية بالذكاء الاصطناعي.}\\[2pt]
+{\Large يكتب المستخدم المعتمَد وصف هويته التجارية،}\\[2pt]
+{\Large فينشئ النظام متجراً كاملاً مع سلة شراء ودفع تجريبي وتحقق آلي.}
+\par}
+\end{minipage}
+\\[40pt]
+{\small\color{Teal!50!white}\ttfamily docs/latex/02-version-one-bilingual-pitch.tex \textbullet{} 2026}
+\end{tcolorbox}
+
+\newpage
+
+%======================================================================
+% HOW TO READ THIS DECK
+%======================================================================
+\sectiontitle{How to read this deck \textbar{} \ar{كيف تقرأ هذا الملف}}{One image per section. English on the left. Arabic on the right.}
+
+\bilingual{
+\begin{enbox}[How to use it]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item Each section opens with one image from the architecture deck.
+\item Below the image: the meaning in plain words, on both sides.
+\item Each section ends with a green \textit{Pitch script} box --- read it aloud to the panel in either language.
+\item Order: System overview $\to$ Gates 0--F $\to$ AI routing $\to$ Code layout.
+\item No prior background needed --- both technical and non-technical members of the panel can follow.
+\end{itemize}
+\end{enbox}
+}{
+\begin{arbox}[\ar{كيف تستخدمه}]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item كل قسم يبدأ بصورة واحدة من مخطط النظام.
+\item تحت الصورة شرح بسيط باللغتين العربية والإنجليزية.
+\item نهاية كل قسم تحتوي على صندوق أخضر باسم \textit{نص العرض}، اقرأه أمام اللجنة بأي لغة.
+\item الترتيب: نظرة عامة، ثم البوابات من صفر إلى F، ثم اختيار النماذج، ثم بنية الكود.
+\item لا يحتاج القارئ خلفية مسبقة، فالشرح مناسب للأعضاء التقنيين وغير التقنيين على حد سواء.
+\end{itemize}
+\end{arbox}
+}
+
+\newpage
+
+%======================================================================
+% 0. SYSTEM ARCHITECTURE
+%======================================================================
+\sectiontitle{1. System Architecture \textbar{} \ar{المخطط العام للنظام}}{The whole machine in one picture.}
+
+\figcenter{00-system-architecture.png}
+
+\bilingual{
+\begin{enbox}[The story in one paragraph]
+A user opens a browser and reaches our Next.js app on Vercel. The app checks who they are and which organization they belong to, then sends their request either to an \kw{AI route} or to a long-running \kw{Workflow} that builds the store step by step. The Workflow calls our \kw{AI Gateway}, which picks the right model (OpenAI, Anthropic, Google, or Replicate) for each task. Everything is saved in \kw{Supabase} with row-level security so no user can ever see another user's data, and every step is traced inside \kw{Sentry} so we can see what happened.
+\end{enbox}
+\begin{enbox}[Why this matters]
+This single picture proves we did not just glue libraries together. We separated four clean layers: \textbf{browser, app, durable orchestration, and platform services}. That separation is what makes the project safe enough to demo to a stranger.
+\end{enbox}
+}{
+\begin{arbox}[\ar{القصة في فقرة واحدة}]
+يفتح المستخدم المتصفح ويصل إلى تطبيقنا المبني بـ \kw{Next.js} على \kw{Vercel}. يتعرّف التطبيق على هويته ومؤسسته، ثم يرسل الطلب إما إلى \kw{مسار الذكاء الاصطناعي} أو إلى \kw{سير العمل} الذي يبني المتجر على خطوات متتالية. يستدعي سير العمل \kw{بوابة الذكاء الاصطناعي} التي تختار النموذج الأنسب لكل مهمة من بين OpenAI و Anthropic و Google و Replicate. تُحفظ البيانات في \kw{Supabase} مع تفعيل أمان مستوى الصف، فلا يستطيع أي مستخدم رؤية بيانات غيره، وتُسجَّل كل خطوة في \kw{Sentry} لمتابعة ما حدث بدقة.
+\end{arbox}
+\begin{arbox}[\ar{لماذا هذا مهم}]
+هذه الصورة وحدها تثبت أننا لم نلصق مكتبات بشكل عشوائي. لقد فصلنا أربع طبقات نظيفة: \textbf{المتصفح، والتطبيق، وتنسيق العمليات الطويلة، وخدمات المنصة}. هذا الفصل هو ما يجعل المشروع آمناً للعرض أمام أي شخص.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``This is the whole system on one page. A user lands on the app, the app sends short requests to an AI gateway and long requests to a durable workflow runner, and everything ends up safely in Supabase. We chose this shape so the AI never touches the user's data directly --- every call goes through one gateway with safety, telemetry, and a mock fallback.''
+}{
+\textbf{\ar{ع.}} «هذه كامل المنظومة في صورة واحدة. يدخل المستخدم إلى التطبيق، فيُرسل التطبيق الطلبات القصيرة إلى بوابة الذكاء الاصطناعي والطلبات الطويلة إلى منسق سير عمل دائم، وتُحفظ النتائج كلها بأمان في Supabase. اخترنا هذا التصميم حتى لا يلمس الذكاء الاصطناعي بيانات المستخدم مباشرة، بل يمر كل استدعاء عبر بوابة واحدة فيها طبقات الأمان والمراقبة وخيار البديل الاختباري.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 1. GATE 0
+%======================================================================
+\sectiontitle{2. Gate 0 \textbullet{} Source Confirmation \textbar{} \ar{البوابة 0 \textbullet{} تأكيد المصادر}}{One day. Pin every version. Write nothing else.}
+
+\figcenter{01-gate-0-source-confirmation.png}
+
+\bilingual{
+\begin{enbox}[What we do here]
+Before we write a single line of code, we confirm every library version against its official documentation using two trusted MCP servers (\kw{Context7} and \kw{OpenAI Docs}). We pin those versions and write a short log so the supervisor can see what we locked.
+\end{enbox}
+\begin{enbox}[Why it matters]
+Most graduation projects start coding immediately and break later because a library changed. We start by reading. The cost is one day; the saving is weeks of debugging.
+\end{enbox}
+}{
+\begin{arbox}[\ar{ماذا نفعل هنا}]
+قبل كتابة أي سطر برمجي، نؤكد إصدار كل مكتبة من توثيقها الرسمي عبر خادمَين موثوقَين هما \kw{Context7} و \kw{OpenAI Docs}. نثبّت هذه الإصدارات ونكتب سجلاً مختصراً ليطّلع عليه المشرف.
+\end{arbox}
+\begin{arbox}[\ar{لماذا هذا مهم}]
+معظم مشاريع التخرج تبدأ بالبرمجة مباشرة فتنهار لاحقاً بسبب تحديث مكتبة. نحن نبدأ بالقراءة، فنخسر يوماً واحداً ونكسب أسابيع من تجنّب الأخطاء.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``Day one is read-only. We do not touch the keyboard until we have written down the exact version of every library we will use. This single discipline prevents the most common failure mode in 2026 projects: silent breaking changes.''
+}{
+\textbf{\ar{ع.}} «اليوم الأول للقراءة فقط. لا نلمس لوحة المفاتيح قبل أن نسجّل الإصدار الدقيق لكل مكتبة سنستخدمها. هذا الانضباط البسيط يمنع أكثر سبب شائع لفشل مشاريع 2026، وهو التغييرات الصامتة في المكتبات.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 2. GATE A
+%======================================================================
+\sectiontitle{3. Gate A \textbullet{} Foundation \textbar{} \ar{البوابة A \textbullet{} الأساس}}{3--4 days. Empty app deploys, login works, security is proven.}
+
+\figcenter{02-gate-a-foundation.png}
+
+\bilingual{
+\begin{enbox}[The five stages]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}
+\item \kw{Scaffold} the monorepo with Turborepo and pnpm.
+\item \kw{Bootstrap} the Next.js 16 web app with Tailwind and shadcn.
+\item \kw{Database} via Drizzle on a fresh Supabase project.
+\item \kw{Auth} via Supabase, with a ``pending approval'' state.
+\item \kw{Observability} via Sentry, ready before any AI call.
+\end{enumerate}
+\end{enbox}
+\begin{enbox}[Plain meaning]
+We build an empty house first --- doors, locks, alarm, and a postal address --- before bringing in any furniture. By the end of this gate the app is online, login works, and we can prove that one user cannot read another user's profile.
+\end{enbox}
+}{
+\begin{arbox}[\ar{المراحل الخمس}]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}
+\item \kw{بناء} هيكل المشروع باستخدام Turborepo و pnpm.
+\item \kw{تجهيز} تطبيق Next.js 16 مع Tailwind و shadcn.
+\item \kw{قاعدة البيانات} عبر Drizzle على مشروع Supabase جديد.
+\item \kw{المصادقة} عبر Supabase مع حالة «بانتظار الموافقة».
+\item \kw{المراقبة} عبر Sentry، جاهزة قبل أي استدعاء للذكاء الاصطناعي.
+\end{enumerate}
+\end{arbox}
+\begin{arbox}[\ar{المعنى البسيط}]
+نبني المنزل فارغاً أولاً، بأبوابه وأقفاله وجهاز إنذاره وعنوانه البريدي، قبل أن نُدخل أي أثاث. في نهاية هذه البوابة يكون التطبيق متاحاً على الإنترنت، وتسجيل الدخول يعمل، ويمكننا إثبات أن مستخدماً واحداً لا يستطيع قراءة بيانات مستخدم آخر.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``At the end of Gate A you can visit the URL, sign up, and log in. Behind the scenes, security is already on. We test it by trying to read another user's row from Postgres --- the database refuses. That refusal is the gate's pass signal.''
+}{
+\textbf{\ar{ع.}} «في نهاية البوابة A يمكن للمستخدم زيارة الرابط، والتسجيل، وتسجيل الدخول. الأمان مفعَّل من البداية، ونختبره بمحاولة قراءة بيانات مستخدم آخر من قاعدة البيانات فترفض. هذا الرفض هو الدليل على نجاح البوابة.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 3. GATE B
+%======================================================================
+\sectiontitle{4. Gate B \textbullet{} Tenancy + Credits + Admin \textbar{} \ar{البوابة B \textbullet{} العزل والأرصدة والإدارة}}{4--5 days. Multi-tenancy, an immutable credit ledger, and a lazy Super Admin.}
+
+\figcenter{03-gate-b-tenancy-credits-admin.png}
+
+\bilingual{
+\begin{enbox}[Three pillars]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item \kw{Tenancy} --- every table is filtered automatically by the database itself, not by the app, so a user's organization can never leak into another's.
+\item \kw{Credits} --- a small append-only journal records every grant, reservation, deduction, and refund. The visible balance is just the sum of the journal.
+\item \kw{Lazy Super Admin} --- a small dashboard for the supervisor (or you) to approve new users and grant them credits.
+\end{itemize}
+\end{enbox}
+\begin{enbox}[Plain meaning]
+This is the gate where the project becomes a real product, not a personal demo. Multiple users can sign up, each pays from their own budget (credits), and the system enforces the rules at the database level --- not in JavaScript that anyone can bypass.
+\end{enbox}
+}{
+\begin{arbox}[\ar{الركائز الثلاث}]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item \kw{العزل} \textemdash{} كل جدول في قاعدة البيانات يُرشَّح تلقائياً حسب المؤسسة، فلا تتسرب بيانات أي مستخدم إلى غيره أبداً.
+\item \kw{الأرصدة} \textemdash{} يوجد سجل صغير «للإضافة فقط» يدوّن كل منح أو حجز أو خصم أو استرجاع. الرصيد الظاهر للمستخدم ما هو إلا مجموع هذا السجل.
+\item \kw{لوحة المسؤول الكسولة} \textemdash{} لوحة بسيطة للمشرف (أو لك) للموافقة على المستخدمين الجدد ومنحهم رصيداً.
+\end{itemize}
+\end{arbox}
+\begin{arbox}[\ar{المعنى البسيط}]
+في هذه البوابة يتحوّل المشروع إلى منتج حقيقي بدلاً من عرض شخصي. يستطيع عدة مستخدمين التسجيل، يدفع كلٌّ منهم من رصيده الخاص، ويطبّق النظام القواعد على مستوى قاعدة البيانات، لا داخل JavaScript الذي يمكن لأي أحد تجاوزه.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``Two things make Gate B special. First, the security rule is in the database itself: even if the front-end has a bug, no data leaks. Second, the credit ledger is append-only --- we can never \emph{lose} a credit because every change is a new line, not an overwrite.''
+}{
+\textbf{\ar{ع.}} «شيئان يميزان البوابة B. الأول أن قاعدة الأمان موجودة داخل قاعدة البيانات نفسها، فحتى لو حصل خطأ في الواجهة لا تتسرب البيانات. والثاني أن سجل الأرصدة لا يقبل سوى الإضافة، فلا يمكن أن نفقد رصيداً لأن كل تغيير سطر جديد لا تعديل.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 4. GATE C
+%======================================================================
+\sectiontitle{5. Gate C \textbullet{} AI Gateway + Brand Intake \textbar{} \ar{البوابة C \textbullet{} بوابة الذكاء الاصطناعي وأخذ هوية العلامة}}{5--6 days. The brain. One gateway, many models, one safe entry point.}
+
+\figcenter{04-gate-c-ai-gateway-brand-intake.png}
+
+\bilingual{
+\begin{enbox}[Top of the picture --- the user flow]
+The user pastes a brand description. Our intake form asks short follow-up questions. The Gateway turns the answers into a strict, validated brief in less than 30 seconds.
+\end{enbox}
+\begin{enbox}[Bottom of the picture --- the gateway]
+Seven AI tasks each have a primary model and a fallback. The router picks the right one for the task: Sonnet for reasoning, GPT-5.4 for long structured JSON, Haiku for cheap classification, Flux Ultra and \code{gpt-image-1} for images. A \kw{mock provider} can stand in for any of them when there is no internet.
+\end{enbox}
+}{
+\begin{arbox}[\ar{أعلى الصورة \textemdash{} مسار المستخدم}]
+يلصق المستخدم وصف علامته التجارية. تطرح عليه واجهتنا أسئلة متابعة قصيرة. تحوّل البوابة إجاباته إلى وصف رسمي مُتحقَّق منه في أقل من 30 ثانية.
+\end{arbox}
+\begin{arbox}[\ar{أسفل الصورة \textemdash{} البوابة}]
+سبع مهام ذكاء اصطناعي، لكل مهمة نموذج رئيسي ونموذج بديل. يختار الموجِّه النموذج الأنسب لكل مهمة: Sonnet للاستنتاج، و GPT-5.4 للمخرجات الطويلة المنظَّمة، و Haiku للتصنيف الرخيص، و Flux Ultra مع \code{gpt-image-1} للصور. ويوجد \kw{مزوّد اختباري} يحلّ محل أيٍّ منها عند انقطاع الإنترنت.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``This is the heart of the project. We do not call OpenAI directly from anywhere in the app --- every AI call passes through this single gateway. That gives us safety (we strip secrets), choice (we pick the best model per task), telemetry (every call traced in Sentry), and demo safety (the mock provider works offline).''
+}{
+\textbf{\ar{ع.}} «هذه قلب المشروع. لا نستدعي OpenAI مباشرة من أي مكان في التطبيق، بل يمر كل استدعاء عبر هذه البوابة الواحدة. هذا يمنحنا الأمان (نزيل المعلومات الحساسة)، والاختيار (نلتقي بأفضل نموذج لكل مهمة)، والمراقبة (كل استدعاء مسجَّل في Sentry)، وسلامة العرض (المزوّد الاختباري يعمل دون إنترنت).»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 5. GATE D
+%======================================================================
+\sectiontitle{6. Gate D \textbullet{} Store Generation Pipeline \textbar{} \ar{البوابة D \textbullet{} خط إنتاج المتاجر}}{6--7 days. A durable, retryable, 9-step workflow that builds a whole store.}
+
+\figcenter{05-gate-d-generation-workflow.png}
+
+\bilingual{
+\begin{enbox}[The 9 steps in plain words]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}
+\item Load the brief and check the user.
+\item Reserve credits (so we cannot oversell).
+\item Plan the store structure.
+\item Generate the catalog (12 products by default).
+\item Generate the copy (titles, descriptions, sections).
+\item Generate the product images.
+\item Save everything as artifacts in the database.
+\item Summarize the verification report.
+\item Charge or refund the credits based on the final status.
+\end{enumerate}
+\end{enbox}
+\begin{enbox}[Why a Workflow and not a normal request]
+Generating a store takes minutes. Browsers time out, networks drop, AI providers throttle. A Workflow can pause, retry, and resume each step independently, so a single failed image does not waste the whole run.
+\end{enbox}
+}{
+\begin{arbox}[\ar{الخطوات التسع بكلام بسيط}]
+\setlist[enumerate]{leftmargin=14pt,itemsep=1pt}
+\begin{enumerate}
+\item قراءة الوصف والتحقق من المستخدم.
+\item حجز الأرصدة (حتى لا نبيع ما لا نملك).
+\item تخطيط بنية المتجر.
+\item إنشاء قائمة المنتجات (12 منتجاً افتراضياً).
+\item كتابة النصوص (العناوين والأوصاف والأقسام).
+\item توليد صور المنتجات.
+\item حفظ كل النتائج كملفات في قاعدة البيانات.
+\item تلخيص تقرير التحقق.
+\item خصم الرصيد أو استرجاعه حسب النتيجة النهائية.
+\end{enumerate}
+\end{arbox}
+\begin{arbox}[\ar{لماذا سير عمل وليس طلباً عادياً}]
+بناء المتجر يستغرق دقائق. المتصفحات تتجاوز مهلتها، والشبكات تتقطع، ومزوّدو الذكاء الاصطناعي يفرضون حدوداً. سير العمل يمكنه التوقف ثم المتابعة مع إعادة المحاولة لكل خطوة منفردة، فلا يضيع التشغيل بأكمله بسبب فشل صورة واحدة.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``Watch the workflow strip in this picture. Nine numbered steps, each one retryable up to three times with exponential backoff. The user's credits are reserved at step 2 and only deducted at step 9 if the run actually finished --- so a network failure refunds them automatically.''
+}{
+\textbf{\ar{ع.}} «انظر إلى شريط سير العمل في هذه الصورة. تسع خطوات مرقَّمة، كل واحدة قابلة لإعادة المحاولة ثلاث مرات بفترات متباعدة. تُحجز أرصدة المستخدم في الخطوة 2 ولا تُخصم إلا في الخطوة 9 إذا اكتمل التشغيل فعلاً، فأي عطل في الشبكة يعيد الأرصدة تلقائياً.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 6. GATE E
+%======================================================================
+\sectiontitle{7. Gate E \textbullet{} Storefront + Cart + Mock Checkout + Verification \textbar{} \ar{البوابة E \textbullet{} الواجهة والسلة والدفع التجريبي والتحقق}}{5--6 days. A real storefront, then 9 automatic checks before anything is shown.}
+
+\figcenter{06-gate-e-storefront-verification.png}
+
+\bilingual{
+\begin{enbox}[Left half --- the storefront]
+The storefront is rendered \textbf{purely from the artifacts} created in Gate D. There is no AI in the render path. We get six pages: home, listing, detail, cart, mock checkout, and confirmation. The cart is owned by the platform, not by the AI.
+\end{enbox}
+\begin{enbox}[Right half --- the verification runner]
+Nine automatic checks gate the demo: schema is present, no cross-tenant access, ledger invariant holds, all routes return 200, cart works end-to-end, mock checkout succeeds and cancels, the design is responsive on four screen sizes, accessibility (a11y) passes axe, and no prompt injection or secret leak landed in artifacts.
+\end{enbox}
+}{
+\begin{arbox}[\ar{النصف الأيسر \textemdash{} الواجهة}]
+تُعرض الواجهة \textbf{اعتماداً على الملفات} التي أُنشئت في البوابة D فقط. لا يوجد ذكاء اصطناعي في مسار العرض. لدينا ست صفحات: الرئيسية، وقائمة المنتجات، وصفحة التفاصيل، والسلة، والدفع التجريبي، وصفحة التأكيد. السلة مملوكة للمنصة لا للذكاء الاصطناعي.
+\end{arbox}
+\begin{arbox}[\ar{النصف الأيمن \textemdash{} منفّذ التحقق}]
+تسعة فحوص آلية تحرس العرض: تأكد المخططات، ومنع الوصول بين المؤسسات، وثبات معادلة الأرصدة، ورجوع كل المسارات 200، وعمل السلة من البداية إلى النهاية، ونجاح وإلغاء الدفع التجريبي، واستجابة التصميم لأربعة أحجام شاشات، واجتياز اختبار إمكانية الوصول، وخلوّ الملفات من حقن النصوص أو تسريب الأسرار.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``Notice the decision diamond on the right: ``All 9 green?''. If the answer is no, the store stays out of the demo and the credits are refunded. The user never sees a half-broken store. The supervisor never has to apologize for a bug in the demo.''
+}{
+\textbf{\ar{ع.}} «لاحظ معيّن القرار في اليمين: «هل الفحوص التسعة خضراء؟». إن لم تكن كذلك، يبقى المتجر خارج العرض وتُستردّ الأرصدة. المستخدم لا يرى متجراً نصف مكسور أبداً، والمشرف ليس بحاجة للاعتذار عن خطأ أثناء العرض.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 7. GATE F
+%======================================================================
+\sectiontitle{8. Gate F \textbullet{} Demo Readiness \textbar{} \ar{البوابة F \textbullet{} جاهزية العرض}}{3--4 days. The graduation bar.}
+
+\figcenter{07-gate-f-demo-readiness.png}
+
+\bilingual{
+\begin{enbox}[The clock face]
+Read the seven numbered steps clockwise: a stranger opens the URL, signs up, gets approved with 10 credits, writes a brand prompt, watches the workflow run, sees a live storefront with cart and mock checkout, and ends with a green verification report. The center card lists the five readiness items the supervisor should see ticked.
+\end{enbox}
+\begin{enbox}[The single sentence that defines success]
+\textit{A stranger can sign up at the preview URL, you approve them, they generate a store, and the whole flow works on a fresh device with only the URL.}
+\end{enbox}
+}{
+\begin{arbox}[\ar{قرص الساعة}]
+اقرأ الخطوات السبع باتجاه عقارب الساعة: شخص لا تعرفه يفتح الرابط، ويسجّل، فيوافَق له ويُمنح 10 أرصدة، ثم يكتب وصف علامته، ويشاهد سير العمل، ويرى متجراً حياً مع سلة ودفع تجريبي، وينتهي الأمر بتقرير تحقق أخضر. البطاقة الوسطى تعدّد بنود الجاهزية الخمسة التي ينبغي للمشرف رؤيتها مكتملة.
+\end{arbox}
+\begin{arbox}[\ar{الجملة الواحدة التي تعرّف النجاح}]
+\textit{يستطيع شخص لا تعرفه أن يسجّل في الرابط التجريبي، فتوافق عليه، فيُنشئ متجراً، ويعمل المسار بأكمله على جهاز جديد لا يحتوي إلا على الرابط.}
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``This is the graduation bar in one circle. We can also flip a single switch (\code{AI\_PROVIDER\_MODE = mock}) and run the same demo offline using fixtures, in case the room has no internet. That single switch is what makes the demo bullet-proof.''
+}{
+\textbf{\ar{ع.}} «هذه دائرة جاهزية التخرج. يمكننا أيضاً تبديل مفتاح واحد (\code{AI\_PROVIDER\_MODE = mock}) وتشغيل نفس العرض دون إنترنت باستخدام نتائج محفوظة مسبقاً، تحسّباً لقاعة بلا اتصال. هذا المفتاح الواحد هو ما يجعل العرض مضموناً.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 8. BONUS — AI ROUTING MATRIX
+%======================================================================
+\sectiontitle{9. Bonus \textbullet{} AI Task Routing Matrix \textbar{} \ar{ملحق \textbullet{} مصفوفة توجيه المهام}}{Why we use multiple AI models, not one.}
+
+\figcenter{08-bonus-ai-routing-matrix.png}
+
+\bilingual{
+\begin{enbox}[The idea]
+No single model wins at everything in 2026. Sonnet 4.6 reasons best, GPT-5.4 follows long instructions best, Haiku 4.5 is the cheapest classifier, Flux Ultra produces the most photoreal images, and \code{gpt-image-1} composes layouts and writes text on labels. We pick the right one per task and document a fallback for when the primary fails.
+\end{enbox}
+\begin{enbox}[The safety net at the bottom]
+The dashed grey lane at the bottom is the \kw{mock provider}. Every single task can fall back to it. When demo day comes and the WiFi misbehaves, the demo still completes from local fixtures.
+\end{enbox}
+}{
+\begin{arbox}[\ar{الفكرة}]
+لا يوجد نموذج واحد يتفوّق في كل شيء في 2026. Sonnet 4.6 الأفضل في الاستنتاج، و GPT-5.4 الأفضل في اتباع التعليمات الطويلة، و Haiku 4.5 الأرخص في التصنيف، و Flux Ultra الأكثر واقعية في الصور، و \code{gpt-image-1} الأنسب لتركيب التصاميم وكتابة نصوص داخل الصور. نختار المناسب لكل مهمة ونوثّق نموذجاً بديلاً لحظة فشل الأساسي.
+\end{arbox}
+\begin{arbox}[\ar{شبكة الأمان في الأسفل}]
+المسار الرمادي المتقطّع في الأسفل هو \kw{المزوّد الاختباري}. كل مهمة قادرة على الرجوع إليه. وعندما يصعب اتصال الإنترنت يوم العرض يكتمل العرض من ملفات محلية محفوظة.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``This single matrix is the answer to ``which AI did you use?''. We did not pick one. We picked the right one per task, with a documented backup, plus a mock provider that drives the whole demo without any network.''
+}{
+\textbf{\ar{ع.}} «هذه المصفوفة هي الإجابة عن سؤال «أي ذكاء اصطناعي استخدمتم؟». لم نختر واحداً، بل اخترنا الأنسب لكل مهمة مع نموذج بديل موثَّق، وأضفنا مزوّداً اختبارياً يشغّل العرض كاملاً دون أي شبكة.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% 9. BONUS — MONOREPO LAYOUT
+%======================================================================
+\sectiontitle{10. Bonus \textbullet{} Monorepo Layout \textbar{} \ar{ملحق \textbullet{} بنية المستودع الموحَّد}}{One app today, room for more tomorrow.}
+
+\figcenter{09-bonus-monorepo-layout.png}
+
+\bilingual{
+\begin{enbox}[Today]
+One real app (\code{apps/web}) plus nine reusable packages. The two most important shared packages are \code{packages/contracts} (the Zod schemas, the single source of truth for AI input/output and database types) and \code{packages/db} (the schemas and security policies).
+\end{enbox}
+\begin{enbox}[Tomorrow]
+The two ghosted folders, \code{apps/worker} and \code{apps/admin-portal}, are extension points. The day we need a separate background worker or a richer admin app, we add a folder. We do not rewrite anything.
+\end{enbox}
+}{
+\begin{arbox}[\ar{اليوم}]
+تطبيق واحد فعلي (\code{apps/web}) إلى جانب تسع حزم قابلة لإعادة الاستخدام. أهم الحزم المشتركة اثنتان: \code{packages/contracts} (مخططات Zod وهي المصدر الموحَّد لمدخلات ومخرجات الذكاء الاصطناعي وأنواع قاعدة البيانات)، و \code{packages/db} (المخططات وقواعد الأمان).
+\end{arbox}
+\begin{arbox}[\ar{غداً}]
+المجلدان الباهتان \code{apps/worker} و \code{apps/admin-portal} نقطتا توسعة. يوم نحتاج عاملاً خلفياً مستقلاً أو لوحة إدارة أوسع، نضيف مجلداً فقط دون أن نعيد كتابة أي شيء.
+\end{arbox}
+}
+
+\begin{pitchbox}
+\bilingual{
+\textbf{EN.} ``This layout is the proof that the project is built like a real product, not a homework folder. Two new apps can be added next year without touching any existing code, because everything they need is already in the shared packages.''
+}{
+\textbf{\ar{ع.}} «هذه البنية دليل على أن المشروع مبني كمنتج حقيقي لا كمجلّد واجب جامعي. يمكن إضافة تطبيقَين جديدَين العام القادم دون لمس أي سطر من الكود القائم، لأن كل ما يحتاجانه موجود في الحزم المشتركة.»
+}
+\end{pitchbox}
+
+\newpage
+
+%======================================================================
+% CLOSING SUMMARY
+%======================================================================
+\sectiontitle{11. Closing summary \textbar{} \ar{الخلاصة}}{The full pitch in one page.}
+
+\bilingual{
+\begin{enbox}[The full pitch in one paragraph]
+We built an authenticated, multi-tenant AI store builder. Users sign up, get approved by a Super Admin, and receive credits. They paste a brand prompt; an AI Gateway turns it into a strict brief in under 30 seconds. A durable Vercel Workflow then runs nine retryable steps to generate the store: plan, catalog, copy, images, persist. A pure renderer turns the saved artifacts into a real storefront with cart and mock checkout. A verification runner runs nine checks before the store is marked \code{demo\_ready}. Everything is observable in Sentry. The whole demo can be re-played offline using fixtures. Total work: $\approx 33$ days, $\approx \$10$ of AI cost on demo day, $\approx \$0/$month at idle.
+\end{enbox}
+}{
+\begin{arbox}[\ar{العرض الكامل في فقرة واحدة}]
+بنينا منصةً لإنشاء المتاجر بالذكاء الاصطناعي مع تسجيل دخول وتعدّد مؤسسات. يسجّل المستخدمون فيوافَق عليهم من لوحة المسؤول ويُمنحون أرصدة. يلصقون وصف علامتهم التجارية، فتحوّله بوابة الذكاء الاصطناعي إلى وصف رسمي مُتحقَّق منه في أقل من 30 ثانية. يقوم سير عمل دائم على Vercel بتنفيذ تسع خطوات قابلة لإعادة المحاولة لإنتاج المتجر: التخطيط، والمنتجات، والنصوص، والصور، والحفظ. يحوّل عارضٌ نقي الملفاتِ المحفوظة إلى متجر حقيقي بسلة ودفع تجريبي. ثم يُجري منفّذ التحقق تسعة فحوص قبل وسم المتجر بـ \code{demo\_ready}. كل شيء قابل للمراقبة في Sentry. ويمكن إعادة تشغيل العرض كاملاً دون إنترنت باستخدام ملفات محفوظة. إجمالي العمل قرابة 33 يوماً، وتكلفة الذكاء الاصطناعي يوم العرض نحو 10 دولارات فقط، والتكلفة الشهرية صفر عند عدم الاستخدام.
+\end{arbox}
+}
+
+\vspace{8pt}
+
+\bilingual{
+\begin{enbox}[What makes this graduation-grade]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item Security at the database, not in the front-end.
+\item An immutable credit ledger we can audit at any time.
+\item AI never touches user data directly --- one safe gateway.
+\item A durable workflow that survives network failures.
+\item Nine automatic checks before any demo is shown.
+\item A mock provider so the demo runs even with no internet.
+\item A clean monorepo that grows without rewrites.
+\item Every gate ends with a tag, a docs log, and a green checklist.
+\end{itemize}
+\end{enbox}
+}{
+\begin{arbox}[\ar{ما يرفع المشروع إلى مستوى التخرج}]
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt}
+\begin{itemize}
+\item الأمان داخل قاعدة البيانات لا في الواجهة الأمامية.
+\item سجل أرصدة لا يقبل سوى الإضافة، يمكن مراجعته في أي وقت.
+\item الذكاء الاصطناعي لا يلمس بيانات المستخدم مباشرة، بل يمر عبر بوابة آمنة واحدة.
+\item سير عمل دائم يصمد أمام انقطاع الشبكة.
+\item تسعة فحوص آلية قبل عرض أي متجر.
+\item مزوّد اختباري يجعل العرض يعمل دون إنترنت.
+\item بنية مستودع نظيفة تتوسّع دون إعادة كتابة.
+\item كل بوابة تنتهي بعلامة إصدار وسجل توثيق وقائمة فحص خضراء.
+\end{itemize}
+\end{arbox}
+}
+
+\vspace{10pt}
+\begin{tcolorbox}[colback=NavyDeep,coltext=white,boxrule=0pt,sharp corners,
+                  left=10pt,right=10pt,top=8pt,bottom=8pt]
+\centering
+{\large\bfseries Thank you. \textbar{} \ar{شكراً لكم.}}\\[4pt]
+{\small\color{Teal!50!white}Questions \& live demo follow. \textbar{} \ar{الأسئلة والعرض الحي بعد ذلك.}}
+\end{tcolorbox}
+
+\end{document}

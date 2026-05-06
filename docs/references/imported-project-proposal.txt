@@ -1,0 +1,15 @@
+﻿Graduation Project Proposal: AI-Powered E-Commerce Orchestration Platform
+Project Overview
+Our proposed project is a centralized "orchestrator" platform designed for users with limited technical experience. The system will take a single user prompt (describing a brand identity and target audience) and automatically connect several advanced AI tools via APIs to build a fully functional e-commerce ecosystem.
+The Problem Statement
+Currently, setting up a complete e-commerce pipeline requires navigating a fragmented system. A user must manually build a store, use separate tools to generate product images, and learn complex platforms to manage ad campaigns. There is no single end-to-end solution that handles this entire process automatically without requiring technical or marketing skills.
+System Architecture and User Workflow
+We are building a platform that chains existing tools together. The system will operate in the following structured stages:
+1. Brand Prompt Intake: The user inputs their brand identity, product type, and target audience into our interface.
+2. Store Generation: The system processes this prompt to automatically generate the e-commerce frontend, database, and shopping cart.
+3. Creative Generation Pipeline: Product data is sent via API to an AI generation tool to produce high-quality, on-model lifestyle images and videos.
+4. Campaign Launch: The system takes the generated store link and creative assets to automatically configure and optimize ad campaigns.
+5. Client Review Loop (Human-in-the-Loop): At every stage, the user retains control to either approve the generated output or request adjustments before the system proceeds to the next step.
+Technical Value and Project Scope
+The primary technical challenge of this graduation project is "Orchestration." The core value lies in successfully chaining multiple third-party APIs together, handling data transfer between them, and creating a smooth, unified interface.
+Note on Academic Scope: To manage financial risk and platform limits during our demonstration, all automated ad campaigns will be executed and tested within a secure "sandbox" environment rather than using live ad spend.
