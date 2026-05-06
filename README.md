@@ -151,6 +151,7 @@ Full documentation lives in `docs/`. Start with:
 - [`docs/decisions/0002-version-one-authenticated-scope.md`](docs/decisions/0002-version-one-authenticated-scope.md) — why authenticated, not anonymous
 - [`docs/architecture/system-overview.md`](docs/architecture/system-overview.md) — system architecture
 - [`.cursor/plans/version-one-advanced-plan_5edfc7dd.plan.md`](.cursor/plans/version-one-advanced-plan_5edfc7dd.plan.md) — the full 7-gate implementation plan
+- [`docs/plans/006-templates-and-post-graduation-roadmap.md`](docs/plans/006-templates-and-post-graduation-roadmap.md) — **Templates UX spec + investment-grade V2/V3 roadmap (supervisor discussion document)**
 
 ---
 
